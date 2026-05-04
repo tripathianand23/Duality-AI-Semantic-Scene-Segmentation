@@ -1,0 +1,82 @@
+# Duality AI Offroad Desert Segmentation — default configuration
+# Adjust paths and class colors to match your released dataset.
+
+dataset:
+  root_dir: "./dataset"
+  train_images: "Train/images"
+  train_masks: "Train/masks"
+  val_images: "Val/images"
+  val_masks: "Val/masks"
+  test_images: "testImages"
+
+mask_encoding:
+  rgb_palette:
+    - [0, 100, 0]
+    - [0, 200, 0]
+    - [150, 200, 0]
+    - [100, 150, 0]
+    - [139, 90, 43]
+    - [255, 0, 255]
+    - [101, 67, 33]
+    - [128, 128, 128]
+    - [210, 180, 140]
+    - [135, 206, 235]
+  grayscale_value_to_class:
+    100: 0
+    200: 1
+    300: 2
+    500: 3
+    550: 4
+    600: 5
+    700: 6
+    800: 7
+    7100: 8
+    10000: 9
+
+training:
+  image_size: 256
+  batch_size: 2
+  epochs: 40
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  num_workers: 0
+  device: "auto"
+  seed: 42
+  use_amp: true
+  val_every: 1
+  use_dice_loss: false
+  dice_weight: 0.5
+  scheduler: "cosine"
+  plateau_factor: 0.5
+  plateau_patience: 3
+  plateau_min_lr: 1.0e-6
+  augment_brightness_contrast: true
+  augment_random_scale_crop: true
+  augment_gaussian_noise: false
+  max_scale: 1.2
+  min_scale: 0.8
+
+model:
+  architecture: "unet"
+  encoder: "resnet34"
+  pretrained: true
+  num_classes: 10
+
+outputs:
+  checkpoint_dir: "checkpoints"
+  runs_dir: "runs"
+  prediction_dir: "outputs/predictions"
+  overlay_dir: "outputs/overlays"
+  log_csv: "runs/training_log.csv"
+
+class_names:
+  - Trees
+  - Lush Bushes
+  - Dry Grass
+  - Dry Bushes
+  - Ground Clutter
+  - Flowers
+  - Logs
+  - Rocks
+  - Landscape
+  - Sky
