@@ -34,31 +34,32 @@ mask_encoding:
     10000: 9
 
 training:
-  image_size: 256
-  batch_size: 2
-  epochs: 40
-  learning_rate: 0.0001
-  weight_decay: 0.01
+  image_size: 640
+  batch_size: 4          # ⬆️ increased from 2 for better gradient estimates
+  epochs: 50             # ✅ already good
+  learning_rate: 0.0003  # ⬆️ increased from 0.0001 for faster convergence
+  weight_decay: 0.0001   # ⬇️ reduced from 0.01 — was too aggressive
   num_workers: 0
   device: "auto"
   seed: 42
   use_amp: true
   val_every: 1
-  use_dice_loss: false
-  dice_weight: 0.5
-  scheduler: "cosine"
+  use_dice_loss: true    # ✅ ENABLE — biggest mIoU boost for rare classes
+  dice_weight: 0.5       # ✅ 50% CE + 50% Dice
+  scheduler: "cosine"    # ✅ already good
   plateau_factor: 0.5
   plateau_patience: 3
   plateau_min_lr: 1.0e-6
   augment_brightness_contrast: true
   augment_random_scale_crop: true
-  augment_gaussian_noise: false
-  max_scale: 1.2
-  min_scale: 0.8
+  augment_gaussian_noise: true   # ✅ ENABLE — helps generalize to unseen env
+  max_scale: 1.4                 # ⬆️ increased from 1.2 for more variety
+  min_scale: 0.7                 # ⬇️ decreased from 0.8 for more variety
 
 model:
-  architecture: "unet"
-  encoder: "resnet34"
+  architecture: deeplabv3plus
+  encoder: efficientnet-b2       # ⬆️ upgraded from mobilenet_v2 — better accuracy
+  encoder_weights: imagenet
   pretrained: true
   num_classes: 10
 

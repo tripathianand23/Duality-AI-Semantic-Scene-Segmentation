@@ -276,6 +276,8 @@ def main() -> None:
     plot_curves(csv_path, runs_dir)
     print(f"Training complete. Best mIoU={best_miou:.4f}. Plots saved under {runs_dir}")
 
+torch.set_num_threads(10)  
+
 
 if __name__ == "__main__":
     main()
