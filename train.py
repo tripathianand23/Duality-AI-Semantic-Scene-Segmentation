@@ -73,7 +73,7 @@ def train_one_epoch(
         masks = batch["mask"].to(device, non_blocking=True)
         optimizer.zero_grad(set_to_none=True)
         if use_amp and scaler is not None:
-            with autocast():
+            with autocast("cuda"):
                 logits = model(imgs)
                 loss = criterion(logits, masks)
             scaler.scale(loss).backward()
@@ -109,7 +109,7 @@ def validate(
         imgs = batch["image"].to(device, non_blocking=True)
         masks = batch["mask"].to(device, non_blocking=True)
         if use_amp and device.type == "cuda":
-            with autocast():
+            with autocast("cuda"):
                 logits = model(imgs)
                 loss = criterion(logits, masks)
         else:
